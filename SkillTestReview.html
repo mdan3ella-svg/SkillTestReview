@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillTestReview — Resume, Skills &amp; Hiring Cross-Reference Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --ink:#151b26;
+  --paper:#f4f5f2;
+  --card:#ffffff;
+  --line:#d8dbe0;
+  --line-soft:#e7e9ec;
+  --navy:#1c3247;
+  --navy-deep:#122232;
+  --brass:#a9791f;
+  --brass-soft:#c9a35c;
+  --muted:#5b6472;
+  --focus:#2563a8;
+
+  --green:#1f7a4d;   --green-bg:#e4f3ea;
+  --blue:#1f5fa8;    --blue-bg:#e5eef8;
+  --yellow:#92710b;  --yellow-bg:#fbf1cf;
+  --orange:#a1530f;  --orange-bg:#fbe6d4;
+  --red:#a3242b;     --red-bg:#f9e0e1;
+  --purple:#6a3f9e;  --purple-bg:#efe4f8;
+  --grey:#5b6472;    --grey-bg:#e9eaec;
+
+  --radius:10px;
+  --font-display:'Source Serif 4', Georgia, serif;
+  --font-body:'Inter', system-ui, sans-serif;
+  --font-mono:'IBM Plex Mono', ui-monospace, monospace;
+}
+body.dark{
+  --ink:#e9ecf1;
+  --paper:#11161e;
+  --card:#171e28;
+  --line:#2b333f;
+  --line-soft:#232b36;
+  --navy:#0d1a26;
+  --navy-deep:#0a141d;
+  --muted:#93a0b2;
+
+  --green:#5fd39a;   --green-bg:#13301f;
+  --blue:#7fb2ea;    --blue-bg:#132a40;
+  --yellow:#e3c260;  --yellow-bg:#332707;
+  --orange:#f0a262;  --orange-bg:#3a220b;
+  --red:#f0868c;     --red-bg:#3a161a;
+  --purple:#c6a3ec;  --purple-bg:#2a1c3a;
+  --grey:#93a0b2;    --grey-bg:#232b36;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion: reduce){ *{animation:none !important; transition:none !important; scroll-behavior:auto !important;} }
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--font-body); font-size:15px; line-height:1.5;
+  min-height:100vh;
+}
+a{color:var(--focus);}
+.skip-link{position:absolute; left:-999px; top:0; background:var(--navy); color:#fff; padding:10px 16px; z-index:999; border-radius:0 0 8px 0;}
+.skip-link:focus{left:0;}
+:focus-visible{outline:3px solid var(--focus); outline-offset:2px;}
+
+/* ============ LAYOUT SHELL ============ */
+.app{display:grid; grid-template-columns:250px 1fr; min-height:100vh;}
+.railbrand{padding:22px 20px 16px; border-bottom:1px solid rgba(255,255,255,.12);}
+.railbrand .stamp{
+  display:inline-flex; align-items:center; gap:8px; font-family:var(--font-mono);
+  font-size:11px; letter-spacing:.14em; color:var(--brass-soft); text-transform:uppercase;
+  border:1px solid var(--brass); border-radius:100px; padding:3px 10px; margin-bottom:10px;
+}
+.railbrand h1{font-family:var(--font-display); font-weight:700; font-size:22px; margin:0 0 4px; color:#fff; letter-spacing:.01em;}
+.railbrand p{margin:0; font-size:12px; color:#a9b6c4; line-height:1.4;}
+
+nav.rail{background:var(--navy); color:#dfe6ee; position:sticky; top:0; height:100vh; overflow-y:auto;}
+.railnav{list-style:none; margin:0; padding:10px;}
+.railnav li{margin-bottom:2px;}
+.railnav button{
+  width:100%; text-align:left; background:transparent; border:1px solid transparent; color:#c7d2de;
+  font-family:var(--font-body); font-size:13.5px; padding:9px 12px; border-radius:8px; cursor:pointer;
+  display:flex; align-items:center; gap:10px;
+}
+.railnav button .num{font-family:var(--font-mono); font-size:11px; color:var(--brass-soft); width:18px; flex:none;}
+.railnav button:hover{background:rgba(255,255,255,.06);}
+.railnav button[aria-current="true"]{background:var(--navy-deep); color:#fff; border-color:rgba(169,121,31,.5); font-weight:600;}
+.railfoot{padding:14px 16px; border-top:1px solid rgba(255,255,255,.1); font-size:11px; color:#8a96a5;}
+
+main{padding:26px 34px 80px; max-width:1180px;}
+.topbar{display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:22px; flex-wrap:wrap;}
+.topbar h2{font-family:var(--font-display); font-size:26px; margin:0 0 4px;}
+.topbar .sub{color:var(--muted); font-size:13.5px; max-width:640px;}
+.toolbar{display:flex; gap:8px; flex-wrap:wrap;}
+
+.mobiletoggle{display:none;}
+
+/* ============ COMPONENTS ============ */
+.card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:18px 20px; margin-bottom:18px;}
+.card h3{font-family:var(--font-display); font-size:17px; margin:0 0 4px;}
+.card .hint{color:var(--muted); font-size:12.5px; margin:0 0 14px;}
+.grid{display:grid; gap:14px;}
+.grid.cols-2{grid-template-columns:1fr 1fr;}
+.grid.cols-3{grid-template-columns:repeat(3,1fr);}
+.grid.cols-4{grid-template-columns:repeat(4,1fr);}
+@media (max-width:900px){ .grid.cols-2,.grid.cols-3,.grid.cols-4{grid-template-columns:1fr;} }
+
+label{display:block; font-size:12px; font-weight:600; color:var(--muted); margin-bottom:5px; text-transform:uppercase; letter-spacing:.03em;}
+input[type=text], input[type=number], input[type=date], select, textarea{
+  width:100%; padding:9px 10px; border:1px solid var(--line); border-radius:7px; background:var(--paper);
+  color:var(--ink); font-family:var(--font-body); font-size:13.5px;
+}
+textarea{min-height:70px; resize:vertical; font-family:var(--font-body);}
+.field{margin-bottom:12px;}
+
+button.btn{
+  font-family:var(--font-body); font-size:13px; font-weight:600; padding:8px 14px; border-radius:7px;
+  border:1px solid var(--navy); background:var(--navy); color:#fff; cursor:pointer;
+}
+button.btn.secondary{background:transparent; color:var(--navy); border-color:var(--line);}
+body.dark button.btn.secondary{color:#dfe6ee;}
+button.btn.ghost{background:transparent; border-color:transparent; color:var(--focus); padding:6px 8px;}
+button.btn.danger{background:transparent; color:var(--red); border-color:var(--red);}
+button.btn:hover{filter:brightness(1.08);}
+button.btn:disabled{opacity:.5; cursor:not-allowed;}
+
+.pill{display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; padding:3px 9px; border-radius:100px; font-family:var(--font-mono); white-space:nowrap;}
+.pill.green{background:var(--green-bg); color:var(--green);}
+.pill.blue{background:var(--blue-bg); color:var(--blue);}
+.pill.yellow{background:var(--yellow-bg); color:var(--yellow);}
+.pill.orange{background:var(--orange-bg); color:var(--orange);}
+.pill.red{background:var(--red-bg); color:var(--red);}
+.pill.purple{background:var(--purple-bg); color:var(--purple);}
+.pill.grey{background:var(--grey-bg); color:var(--grey);}
+
+table{width:100%; border-collapse:collapse; font-size:13px;}
+th{text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); padding:8px 8px; border-bottom:2px solid var(--line);}
+td{padding:8px; border-bottom:1px solid var(--line-soft); vertical-align:top;}
+tr:last-child td{border-bottom:none;}
+.tablewrap{overflow-x:auto;}
+td input[type=text], td select, td textarea{font-size:12.5px; padding:6px 8px;}
+td textarea{min-height:40px;}
+
+.statgrid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:18px;}
+@media (max-width:900px){.statgrid{grid-template-columns:repeat(2,1fr);}}
+.stat{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:14px 16px;}
+.stat .label{font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin-bottom:6px;}
+.stat .value{font-family:var(--font-mono); font-size:24px; font-weight:600;}
+.bar{height:6px; border-radius:4px; background:var(--line-soft); margin-top:8px; overflow:hidden;}
+.bar > span{display:block; height:100%; background:var(--brass);}
+
+.warnpanel{background:var(--yellow-bg); border:1px solid var(--yellow); color:var(--yellow); border-radius:var(--radius); padding:14px 18px; margin-bottom:18px; font-size:13px;}
+.warnpanel strong{display:block; font-family:var(--font-mono); text-transform:uppercase; letter-spacing:.05em; font-size:11.5px; margin-bottom:4px;}
+.ai-tag{display:inline-flex; align-items:center; gap:6px; font-family:var(--font-mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; background:var(--purple-bg); color:var(--purple); padding:3px 9px; border-radius:100px; margin-bottom:10px;}
+
+.checkrow{display:flex; align-items:flex-start; gap:8px; padding:5px 0; font-size:13px;}
+.checkrow input{margin-top:3px;}
+.checklist{columns:2; column-gap:20px;}
+@media (max-width:700px){.checklist{columns:1;}}
+
+.legend{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;}
+.tooltip-btn{background:none;border:1px solid var(--line); color:var(--muted); border-radius:50%; width:18px;height:18px; font-size:11px; cursor:pointer; line-height:1;}
+details.edu-tip{margin-top:10px; font-size:12.5px; color:var(--muted); background:var(--paper); border:1px dashed var(--line); border-radius:8px; padding:8px 12px;}
+details.edu-tip summary{cursor:pointer; font-weight:600; color:var(--ink);}
+.eduMode-only{display:none;}
+body.edu .eduMode-only{display:block;}
+
+footer.disclaimer{margin-top:30px; padding-top:16px; border-top:1px solid var(--line); font-size:11.5px; color:var(--muted); line-height:1.6;}
+
+.tabsection{display:none;}
+.tabsection.active{display:block;}
+
+.reasoning-box{background:var(--paper); border-left:4px solid var(--brass); padding:14px 16px; border-radius:0 8px 8px 0; font-size:13.5px; line-height:1.65;}
+.reasoning-box p{margin:0 0 8px;}
+.reasoning-box p:last-child{margin-bottom:0;}
+
+.rowhead{display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;}
+
+.threepane{display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px;}
+@media (max-width:1000px){.threepane{grid-template-columns:1fr;}}
+.pane{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:14px; min-height:160px;}
+.pane h4{margin:0 0 10px; font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted);}
+.reqlink{display:block; width:100%; text-align:left; background:var(--paper); border:1px solid var(--line-soft); border-radius:7px; padding:8px 10px; margin-bottom:6px; cursor:pointer; font-size:12.5px;}
+.reqlink[aria-pressed="true"]{border-color:var(--brass); background:var(--yellow-bg);}
+
+.searchbar{display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap;}
+.searchbar input{flex:1; min-width:180px;}
+
+@media (max-width:820px){
+  .app{grid-template-columns:1fr;}
+  nav.rail{position:fixed; inset:0 30% 0 0; z-index:50; transform:translateX(-100%); transition:transform .2s ease; width:78%;}
+  nav.rail.open{transform:translateX(0);}
+  .mobiletoggle{display:inline-flex; position:sticky; top:10px; margin:10px 0 0 10px; z-index:40;}
+  main{padding:14px 16px 60px;}
+}
+@media print{
+  nav.rail, .toolbar, .mobiletoggle, .no-print{display:none !important;}
+  .app{display:block;}
+  .tabsection{display:block !important; page-break-after:always;}
+  body{background:#fff; color:#000;}
+}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<div class="app">
+  <button class="btn mobiletoggle no-print" id="navToggle" aria-expanded="false" aria-controls="railnav">☰ Menu</button>
+  <nav class="rail" id="railnav" aria-label="Application sections">
+    <div class="railbrand">
+      <span class="stamp">◆ Human review required</span>
+      <h1>SkillTestReview</h1>
+      <p>Resume · Skills · Requirements · References · Reasoning · Hiring Review</p>
+    </div>
+    <ul class="railnav" id="navlist" role="tablist" aria-orientation="vertical"></ul>
+    <div class="railfoot">Decision-support tool. Not an autonomous hiring decision-maker.</div>
+  </nav>
+
+  <main id="main">
+    <div class="topbar">
+      <div>
+        <h2 id="pageTitle">Dashboard</h2>
+        <p class="sub" id="pageSub">Job-requirement evidence match overview for the active candidate review.</p>
+      </div>
+      <div class="toolbar no-print">
+        <button class="btn secondary" id="modeToggle" type="button">🎓 Educational Mode</button>
+        <button class="btn secondary" id="themeToggle" type="button">🌙 Dark mode</button>
+        <button class="btn secondary" id="loadSample" type="button">Load sample review</button>
+      </div>
+    </div>
+
+    <!-- ============ DASHBOARD ============ -->
+    <section class="tabsection" id="tab-dashboard">
+      <div class="statgrid">
+        <div class="stat"><div class="label">Job-requirement evidence match</div><div class="value" id="statMatch">0%</div><div class="bar"><span id="statMatchBar" style="width:0%"></span></div></div>
+        <div class="stat"><div class="label">Required skills met</div><div class="value" id="statReqSkills">0 / 0</div></div>
+        <div class="stat"><div class="label">Preferred skills met</div><div class="value" id="statPrefSkills">0 / 0</div></div>
+        <div class="stat"><div class="label">Evidence strength</div><div class="value" id="statEvidence">—</div></div>
+        <div class="stat"><div class="label">Reference status</div><div class="value" id="statRef">—</div></div>
+        <div class="stat"><div class="label">Skill gaps</div><div class="value" id="statGaps">0</div></div>
+        <div class="stat"><div class="label">Verification items</div><div class="value" id="statVerify">0</div></div>
+        <div class="stat"><div class="label">Interview questions</div><div class="value" id="statQuestions">0</div></div>
+      </div>
+      <div class="card">
+        <h3>Candidate &amp; role snapshot</h3>
+        <div class="grid cols-2">
+          <div><strong id="dashCandidateName">—</strong><div class="hint" id="dashCandidateRole">No candidate loaded</div></div>
+          <div><strong id="dashJobTitle">—</strong><div class="hint" id="dashJobMeta">No job description loaded</div></div>
+        </div>
+      </div>
+      <div class="warnpanel">
+        <strong>Job-related review only</strong>
+        This dashboard reflects job-related evidence only. It does not score, infer, or use protected characteristics, and the percentage above is a documentation aid — not a probability of hiring, and not a hiring decision.
+      </div>
+    </section>
+
+    <!-- ============ RESUME INPUT ============ -->
+    <section class="tabsection" id="tab-resume">
+      <div class="card">
+        <h3>Candidate profile</h3>
+        <p class="hint">Enter or paste resume details. The application does not automatically infer sensitive personal information.</p>
+        <div class="grid cols-3">
+          <div class="field"><label for="cName">Candidate name</label><input type="text" id="cName" data-bind="candidate.name"></div>
+          <div class="field"><label for="cRole">Target role</label><input type="text" id="cRole" data-bind="candidate.targetRole"></div>
+          <div class="field"><label for="cLoc">Location</label><input type="text" id="cLoc" data-bind="candidate.location"></div>
+          <div class="field"><label for="cYears">Years of relevant experience</label><input type="text" id="cYears" data-bind="candidate.yearsExp"></div>
+          <div class="field"><label for="cInd">Industry experience</label><input type="text" id="cInd" data-bind="candidate.industry"></div>
+          <div class="field"><label for="cCurrent">Current / most recent position</label><input type="text" id="cCurrent" data-bind="candidate.currentRole"></div>
+        </div>
+        <div class="field"><label for="cSummary">Professional summary</label><textarea id="cSummary" data-bind="candidate.summary"></textarea></div>
+      </div>
+      <div class="card">
+        <h3>Resume text</h3>
+        <p class="hint">Paste resume content, or drop a .txt file below. PDF/DOCX uploads should be converted to text before pasting in a browser-only environment.</p>
+        <div class="field">
+          <input type="file" id="resumeFile" accept=".txt">
+        </div>
+        <textarea id="resumeText" data-bind="candidate.resumeText" style="min-height:180px;" placeholder="Paste resume text here…"></textarea>
+      </div>
+    </section>
+
+    <!-- ============ JOB DESCRIPTION ============ -->
+    <section class="tabsection" id="tab-job">
+      <div class="card">
+        <h3>Job description analyzer</h3>
+        <div class="grid cols-3">
+          <div class="field"><label for="jTitle">Job title</label><input type="text" id="jTitle" data-bind="job.title"></div>
+          <div class="field"><label for="jDept">Department</label><input type="text" id="jDept" data-bind="job.department"></div>
+          <div class="field"><label for="jSeniority">Seniority</label><input type="text" id="jSeniority" data-bind="job.seniority"></div>
+          <div class="field"><label for="jType">Employment type</label><input type="text" id="jType" data-bind="job.employmentType"></div>
+          <div class="field"><label for="jEdu">Education requirements</label><input type="text" id="jEdu" data-bind="job.education"></div>
+          <div class="field"><label for="jSoftware">Software / technology</label><input type="text" id="jSoftware" data-bind="job.software"></div>
+        </div>
+        <div class="grid cols-2">
+          <div class="field"><label for="jReqSkills">Required skills</label><textarea id="jReqSkills" data-bind="job.requiredSkills"></textarea></div>
+          <div class="field"><label for="jPrefSkills">Preferred skills</label><textarea id="jPrefSkills" data-bind="job.preferredSkills"></textarea></div>
+          <div class="field"><label for="jReqExp">Required experience</label><textarea id="jReqExp" data-bind="job.requiredExperience"></textarea></div>
+          <div class="field"><label for="jPrefExp">Preferred experience</label><textarea id="jPrefExp" data-bind="job.preferredExperience"></textarea></div>
+          <div class="field"><label for="jCerts">Required certifications / licenses</label><textarea id="jCerts" data-bind="job.requiredCerts"></textarea></div>
+          <div class="field"><label for="jResp">Responsibilities</label><textarea id="jResp" data-bind="job.responsibilities"></textarea></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ REQUIREMENT MATRIX ============ -->
+    <section class="tabsection" id="tab-matrix">
+      <div class="card">
+        <div class="rowhead">
+          <div>
+            <h3>Requirement matrix</h3>
+            <p class="hint">Requirement → priority → resume evidence → evidence strength → status → verification → reviewer reasoning.</p>
+          </div>
+          <button class="btn no-print" id="addReq" type="button">+ Add requirement</button>
+        </div>
+        <div class="legend">
+          <span class="pill green">✓ Verified / strong</span>
+          <span class="pill blue">~ Relevant / transferable</span>
+          <span class="pill yellow">? Partial / verify</span>
+          <span class="pill orange">↑ Development gap</span>
+          <span class="pill red">✕ Missing</span>
+          <span class="pill purple">⌘ Needs reference / external validation</span>
+          <span class="pill grey">— Not provided</span>
+        </div>
+        <div class="tablewrap">
+          <table id="reqTable">
+            <thead><tr>
+              <th style="width:20px"></th><th>Requirement</th><th>Priority</th><th>Evidence (resume/notes)</th>
+              <th>Grade</th><th>Status</th><th>Verification</th><th>Reviewer reasoning</th><th></th>
+            </tr></thead>
+            <tbody id="reqBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SKILL CROSS-REFERENCE ============ -->
+    <section class="tabsection" id="tab-skills">
+      <div class="card">
+        <div class="rowhead">
+          <div><h3>Skill cross-reference</h3><p class="hint">Searchable matrix of required vs. demonstrated skill levels, with evidence and recency.</p></div>
+          <button class="btn no-print" id="addSkill" type="button">+ Add skill</button>
+        </div>
+        <div class="searchbar">
+          <input type="text" id="skillSearch" placeholder="Search skills by name or category…" aria-label="Search skills">
+        </div>
+        <div class="tablewrap">
+          <table id="skillTable">
+            <thead><tr>
+              <th>Skill</th><th>Category</th><th>Required level</th><th>Candidate level</th><th>Evidence</th><th>Years</th><th>Recency</th><th>Confidence</th><th>Verification</th><th></th>
+            </tr></thead>
+            <tbody id="skillBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ EXPERIENCE & EDUCATION ============ -->
+    <section class="tabsection" id="tab-experience">
+      <div class="card">
+        <div class="rowhead"><h3>Experience timeline</h3><button class="btn no-print" id="addExp" type="button">+ Add position</button></div>
+        <div class="tablewrap">
+          <table id="expTable">
+            <thead><tr><th>Employer</th><th>Role</th><th>Dates</th><th>Industry</th><th>Responsibilities / tools</th><th>Relevance</th><th></th></tr></thead>
+            <tbody id="expBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="rowhead"><h3>Education &amp; certification checker</h3><button class="btn no-print" id="addEdu" type="button">+ Add credential</button></div>
+        <p class="hint">A credential is never automatically disqualifying when equivalent job-related experience may satisfy the requirement.</p>
+        <div class="tablewrap">
+          <table id="eduTable">
+            <thead><tr><th>Credential / degree</th><th>Institution / issuer</th><th>Year / expiry</th><th>Required?</th><th>Verified?</th><th></th></tr></thead>
+            <tbody id="eduBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ REFERENCE CHECKER ============ -->
+    <section class="tabsection" id="tab-references">
+      <div class="card">
+        <div class="rowhead"><h3>Reference checker</h3><button class="btn no-print" id="addRef" type="button">+ Add reference</button></div>
+        <p class="hint">A discrepancy is flagged for human review and verification — it is never treated as proof of dishonesty.</p>
+        <div id="refList"></div>
+      </div>
+    </section>
+
+    <!-- ============ GAP ANALYSIS ============ -->
+    <section class="tabsection" id="tab-gaps">
+      <div class="card">
+        <div class="rowhead"><h3>Gap analysis</h3><button class="btn no-print" id="addGap" type="button">+ Add gap</button><button class="btn secondary no-print" id="autoGap" type="button">Auto-populate from matrix</button></div>
+        <div class="tablewrap">
+          <table id="gapTable">
+            <thead><tr><th>Skill</th><th>Required level</th><th>Candidate evidence</th><th>Gap</th><th>Severity</th><th>Training recommendation</th><th></th></tr></thead>
+            <tbody id="gapBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ INTERVIEW BUILDER ============ -->
+    <section class="tabsection" id="tab-interview">
+      <div class="card">
+        <div class="rowhead">
+          <div><h3>Interview question generator</h3><p class="hint">Generated from missing evidence, partial matches, and skill gaps. Never generated from protected characteristics.</p></div>
+          <button class="btn no-print" id="genQuestions" type="button">Generate from matrix</button>
+        </div>
+        <div class="tablewrap">
+          <table id="qTable">
+            <thead><tr><th>Question</th><th>Type</th><th>Required competency</th><th>Rating (1–5)</th><th>Evidence / reasoning</th><th></th></tr></thead>
+            <tbody id="qBody"></tbody>
+          </table>
+        </div>
+        <button class="btn secondary no-print" id="addQ" type="button" style="margin-top:10px;">+ Add question manually</button>
+      </div>
+    </section>
+
+    <!-- ============ REASONING SUMMARIZER ============ -->
+    <section class="tabsection" id="tab-reasoning">
+      <div class="card">
+        <span class="ai-tag">AI-generated summary — human verification required</span>
+        <h3>Why this result?</h3>
+        <div class="grid cols-2">
+          <div><h4>Strongest matches</h4><ul id="rStrong"></ul></div>
+          <div><h4>Partial matches</h4><ul id="rPartial"></ul></div>
+          <div><h4>Missing evidence</h4><ul id="rMissing"></ul></div>
+          <div><h4>Transferable strengths</h4><ul id="rTransfer"></ul></div>
+          <div><h4>Development areas</h4><ul id="rDev"></ul></div>
+          <div><h4>Verification required</h4><ul id="rVerify"></ul></div>
+        </div>
+        <h4>Overall reasoning</h4>
+        <div class="reasoning-box" id="rNarrative"></div>
+        <button class="btn secondary no-print" id="regenReasoning" type="button" style="margin-top:12px;">↻ Regenerate summary</button>
+      </div>
+
+      <div class="card">
+        <h3>Three-pane review mode</h3>
+        <p class="hint">Select a requirement to view its evidence and reasoning side by side.</p>
+        <div class="threepane">
+          <div class="pane"><h4>Job requirements</h4><div id="paneReqs"></div></div>
+          <div class="pane"><h4>Candidate evidence</h4><div id="paneEvidence">Select a requirement to view evidence.</div></div>
+          <div class="pane"><h4>Reasoning &amp; review</h4><div id="paneReasoning">Select a requirement to view reasoning.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ HIRING REVIEW ============ -->
+    <section class="tabsection" id="tab-review">
+      <div class="card">
+        <h3>Human review status</h3>
+        <p class="hint">The application does not make the final decision. A human reviewer documents it here.</p>
+        <div class="checklist" id="reviewChecklist"></div>
+        <div class="field" style="margin-top:14px;"><label for="revDecision">Reviewer decision</label><input type="text" id="revDecision" data-bind="review.decision"></div>
+        <div class="field"><label for="revReason">Decision reason (required)</label><textarea id="revReason" data-bind="review.reason"></textarea></div>
+        <div class="field"><label for="revEvidence">Evidence supporting decision (required)</label><textarea id="revEvidence" data-bind="review.evidenceSupporting"></textarea></div>
+        <div class="grid cols-2">
+          <div class="field"><label for="revName">Reviewer</label><input type="text" id="revName" data-bind="review.reviewer"></div>
+          <div class="field"><label for="revDate">Date</label><input type="date" id="revDate" data-bind="review.date"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ EXPORT ============ -->
+    <section class="tabsection" id="tab-export">
+      <div class="card">
+        <h3>Export review</h3>
+        <p class="hint">Candidate information may contain personal data. Store, process, retain, and share it only according to applicable privacy, employment, organizational, and jurisdictional requirements.</p>
+        <div class="toolbar">
+          <button class="btn" id="printBtn" type="button">🖶 Print / PDF</button>
+          <button class="btn secondary" id="exportJson" type="button">Export JSON</button>
+          <button class="btn secondary" id="exportCsv" type="button">Export CSV (matrix)</button>
+          <button class="btn secondary" id="exportMd" type="button">Export Markdown report</button>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Data handling</h3>
+        <div class="toolbar">
+          <button class="btn secondary" id="localOnly" type="button" aria-pressed="true">✓ Local-only mode</button>
+          <button class="btn secondary" id="clearCandidate" type="button">Clear candidate data</button>
+          <button class="btn danger" id="resetAll" type="button">Reset entire project</button>
+        </div>
+        <p class="hint" id="dataStatus" style="margin-top:10px;">All data is stored only in this browser's local storage. Nothing is transmitted anywhere by this page.</p>
+      </div>
+    </section>
+
+    <!-- ============ METHODOLOGY & COMPLIANCE ============ -->
+    <section class="tabsection" id="tab-methodology">
+      <div class="warnpanel">
+        <strong>Job-related review only</strong>
+        This system must not score, infer, or recommend based on race, ethnicity, religion, sex, gender identity, sexual orientation, disability, age (except where a lawful job requirement specifically applies), national origin, genetic information, family status, protected medical information, photograph-based characteristics, name-based demographic assumptions, zip/postal-code proxies, social-media appearance, or other legally protected or irrelevant personal characteristics. Employment selection procedures can create legal risk when they disproportionately exclude protected groups without adequate job-related justification — this tool emphasizes job relevance, consistency, validation, documentation, and human review.
+      </div>
+      <div class="card">
+        <h3>Explainable match weighting</h3>
+        <p class="hint">Weights are configurable decision-support settings, not universal hiring standards. Adjust to reflect the role; totals are normalized automatically.</p>
+        <div class="grid cols-3" id="weightGrid"></div>
+      </div>
+      <div class="card">
+        <span class="ai-tag">AI assistance guardrail</span>
+        <h3>What AI may and may not do here</h3>
+        <div class="grid cols-2">
+          <div>
+            <h4>May</h4>
+            <ul><li>Extract skills and organize resume content</li><li>Summarize evidence and compare requirements</li><li>Suggest interview questions</li><li>Identify missing information</li><li>Generate training recommendations</li></ul>
+          </div>
+          <div>
+            <h4>Must not</h4>
+            <ul><li>Reject candidates or make final hiring decisions</li><li>Rank people using protected characteristics</li><li>Infer protected characteristics</li><li>Invent qualifications or references</li><li>Treat keyword absence as proof of skill absence</li></ul>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Evidence quality grading</h3>
+        <table>
+          <thead><tr><th>Grade</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td><span class="pill green">A</span></td><td>Strong evidence — specific achievement, measurable result, relevant context.</td></tr>
+            <tr><td><span class="pill blue">B</span></td><td>Good evidence — specific experience, limited measurable outcome.</td></tr>
+            <tr><td><span class="pill yellow">C</span></td><td>General evidence — skill mentioned but poorly demonstrated.</td></tr>
+            <tr><td><span class="pill orange">D</span></td><td>Weak evidence — keyword only.</td></tr>
+            <tr><td><span class="pill purple">U</span></td><td>Unverified — requires confirmation.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <footer class="disclaimer">
+        SkillTestReview is a decision-support, documentation, and educational tool. It does not replace qualified HR professionals, hiring managers, legal counsel, organizational policy, or applicable employment and privacy law. Hiring decisions must be based on legitimate, job-related criteria and appropriate human review. Automated analysis is designed to support — never replace — human judgment, particularly where automated selection systems may introduce discriminatory effects or rely on poorly validated criteria.
+      </footer>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============ NAV CONFIG ============ */
+var SECTIONS = [
+  {id:"dashboard", label:"Dashboard", sub:"Job-requirement evidence match overview for the active candidate review."},
+  {id:"resume", label:"Resume input", sub:"Enter or paste candidate resume content and profile fields."},
+  {id:"job", label:"Job description", sub:"Define the role's requirements, priorities, and responsibilities."},
+  {id:"matrix", label:"Requirement matrix", sub:"Map each requirement to resume evidence, strength, and status."},
+  {id:"skills", label:"Skill cross-reference", sub:"Compare required vs. demonstrated skill levels with evidence."},
+  {id:"experience", label:"Experience & education", sub:"Timeline of positions and a credential verification checker."},
+  {id:"references", label:"Reference checker", sub:"Document reference conversations and consistency with the resume."},
+  {id:"gaps", label:"Gap analysis", sub:"Visualize skill gaps, severity, and training recommendations."},
+  {id:"interview", label:"Interview builder", sub:"Generate structured interview questions from evidence gaps."},
+  {id:"reasoning", label:"Reasoning summarizer", sub:"An auditable, evidence-linked narrative of the review — for human verification."},
+  {id:"review", label:"Hiring review", sub:"Human-documented review status, decision, and supporting evidence."},
+  {id:"export", label:"Export / print", sub:"Export the review, or manage locally stored candidate data."},
+  {id:"methodology", label:"Methodology & compliance", sub:"Fairness guardrails, weighting, and evidence-grading methodology."}
+];
+
+var STATUS_META = {
+  green:{label:"Verified", icon:"✓"}, blue:{label:"Transferable", icon:"~"},
+  yellow:{label:"Partial", icon:"?"}, orange:{label:"Gap", icon:"↑"},
+  red:{label:"Missing", icon:"✕"}, purple:{label:"Reference needed", icon:"⌘"},
+  grey:{label:"Not provided", icon:"—"}
+};
+var STATUS_SCORE = {green:100, blue:80, yellow:50, orange:25, red:0, purple:50, grey:0};
+var PRIORITY_WEIGHT = {"Must have":3, "Should have":2, "Nice to have":1, "Developmental":1, "Not applicable":0};
+
+/* ============ STATE ============ */
+var DEFAULT_STATE = function(){ return {
+  meta:{theme:"light", mode:"professional"},
+  candidate:{name:"", targetRole:"", summary:"", location:"", yearsExp:"", industry:"", currentRole:"", resumeText:""},
+  job:{title:"", department:"", seniority:"", employmentType:"", requiredSkills:"", preferredSkills:"", requiredExperience:"", preferredExperience:"", requiredCerts:"", education:"", software:"", responsibilities:""},
+  requirements:[], skills:[], experience:[], education:[], references:[], gaps:[], questions:[],
+  weights:{Technical:25, Experience:20, Accomplishments:15, "Certification/License":10, "Software/Tools":10, Communication:5, "Industry knowledge":5, Transferable:5, "Reference validation":5},
+  review:{reviewer:"", date:"", decision:"", reason:"", evidenceSupporting:"", checklist:{}}
+};};
+var state = DEFAULT_STATE();
+var uidCounter = 1;
+function uid(){ return "id" + (uidCounter++) + "_" + Math.random().toString(36).slice(2,7); }
+
+function saveState(){
+  try{ localStorage.setItem("skilltestreview_state", JSON.stringify(state)); }catch(e){ /* storage unavailable */ }
+}
+function loadState(){
+  try{
+    var raw = localStorage.getItem("skilltestreview_state");
+    if(raw){ var parsed = JSON.parse(raw); state = Object.assign(DEFAULT_STATE(), parsed); }
+  }catch(e){ /* ignore corrupt storage */ }
+}
+
+function getPath(obj, path){
+  return path.split(".").reduce(function(o,k){ return (o||{})[k]; }, obj);
+}
+function setPath(obj, path, val){
+  var parts = path.split("."); var o = obj;
+  for(var i=0;i<parts.length-1;i++){ o = o[parts[i]]; }
+  o[parts[parts.length-1]] = val;
+}
+
+/* ============ NAV RENDER ============ */
+var activeTab = "dashboard";
+function renderNav(){
+  var list = document.getElementById("navlist");
+  list.innerHTML = "";
+  SECTIONS.forEach(function(s, idx){
+    var li = document.createElement("li");
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.setAttribute("role","tab");
+    btn.setAttribute("aria-current", s.id === activeTab ? "true":"false");
+    btn.innerHTML = '<span class="num">' + String(idx+1).padStart(2,"0") + '</span><span>' + s.label + '</span>';
+    btn.addEventListener("click", function(){ setActiveTab(s.id); });
+    li.appendChild(btn);
+    list.appendChild(li);
+  });
+}
+function setActiveTab(id){
+  activeTab = id;
+  document.querySelectorAll(".tabsection").forEach(function(sec){ sec.classList.remove("active"); });
+  var el = document.getElementById("tab-"+id);
+  if(el) el.classList.add("active");
+  var meta = SECTIONS.filter(function(s){return s.id===id;})[0];
+  if(meta){ document.getElementById("pageTitle").textContent = meta.label; document.getElementById("pageSub").textContent = meta.sub; }
+  renderNav();
+  document.getElementById("railnav").classList.remove("open");
+  window.scrollTo({top:0, behavior:"auto"});
+  if(id === "dashboard") renderDashboard();
+  if(id === "reasoning") { renderReasoning(); renderThreePane(); }
+}
+
+/* ============ GENERIC BINDING ============ */
+function bindFields(){
+  document.querySelectorAll("[data-bind]").forEach(function(el){
+    var path = el.getAttribute("data-bind");
+    el.value = getPath(state, path) || "";
+    el.addEventListener("input", function(){
+      setPath(state, path, el.value);
+      saveState();
+      if(path.indexOf("candidate")===0 || path.indexOf("job")===0) renderDashboard();
+    });
+  });
+}
+
+/* ============ REQUIREMENT MATRIX ============ */
+function reqRowHtml(r){
+  var statusOpts = Object.keys(STATUS_META).map(function(k){
+    return '<option value="'+k+'"'+(r.status===k?" selected":"")+'>'+STATUS_META[k].icon+' '+STATUS_META[k].label+'</option>';
+  }).join("");
+  var prioOpts = Object.keys(PRIORITY_WEIGHT).map(function(p){
+    return '<option'+(r.priority===p?" selected":"")+'>'+p+'</option>';
+  }).join("");
+  var gradeOpts = ["A","B","C","D","U"].map(function(g){ return '<option'+(r.grade===g?" selected":"")+'>'+g+'</option>'; }).join("");
+  return '<tr data-id="'+r.id+'">'+
+    '<td><span class="pill '+r.status+'" title="'+STATUS_META[r.status].label+'">'+STATUS_META[r.status].icon+'</span></td>'+
+    '<td><input type="text" data-f="text" value="'+escAttr(r.text)+'" placeholder="e.g. Revit proficiency"></td>'+
+    '<td><select data-f="priority">'+prioOpts+'</select></td>'+
+    '<td><textarea data-f="evidence" placeholder="Resume evidence / reviewer notes">'+escHtml(r.evidence)+'</textarea></td>'+
+    '<td><select data-f="grade">'+gradeOpts+'</select></td>'+
+    '<td><select data-f="status">'+statusOpts+'</select></td>'+
+    '<td><input type="text" data-f="verification" value="'+escAttr(r.verification)+'" placeholder="e.g. Ask in interview"></td>'+
+    '<td><textarea data-f="reasoning" placeholder="Why this status?">'+escHtml(r.reasoning)+'</textarea></td>'+
+    '<td><button class="btn ghost no-print" data-del="1" aria-label="Remove requirement">✕</button></td>'+
+  '</tr>';
+}
+function renderReqTable(){
+  var body = document.getElementById("reqBody");
+  body.innerHTML = state.requirements.map(reqRowHtml).join("");
+}
+function wireReqTable(){
+  var body = document.getElementById("reqBody");
+  body.addEventListener("input", function(e){
+    var tr = e.target.closest("tr"); if(!tr) return;
+    var id = tr.getAttribute("data-id");
+    var field = e.target.getAttribute("data-f");
+    if(!field) return;
+    var row = state.requirements.filter(function(r){return r.id===id;})[0];
+    if(row){ row[field] = e.target.value; saveState();
+      if(field==="status"){ var pill = tr.querySelector(".pill"); pill.className = "pill "+row.status; pill.textContent = STATUS_META[row.status].icon; pill.title = STATUS_META[row.status].label; renderDashboard(); }
+    }
+  });
+  body.addEventListener("click", function(e){
+    if(e.target.getAttribute("data-del")){
+      var tr = e.target.closest("tr"); var id = tr.getAttribute("data-id");
+      state.requirements = state.requirements.filter(function(r){return r.id!==id;});
+      saveState(); renderReqTable(); renderDashboard();
+    }
+  });
+  document.getElementById("addReq").addEventListener("click", function(){
+    state.requirements.push({id:uid(), text:"", priority:"Should have", evidence:"", grade:"C", status:"grey", verification:"", reasoning:""});
+    saveState(); renderReqTable();
+  });
+}
+
+/* ============ SKILL MATRIX ============ */
+var LEVELS = ["Awareness","Beginner","Intermediate","Advanced","Expert","Lead/Specialist"];
+var CATEGORIES = ["Technical – Software","Technical – Programming","Technical – BIM/CAD","Technical – Data","Technical – Engineering","Technical – IT/Cybersecurity","Professional – Project mgmt","Professional – Communication","Professional – Leadership","Industry knowledge","Emerging technology / AI"];
+var CONF = ["High","Medium","Low"];
+var VERIF = ["Verified","Partial","Pending","Not required"];
+function skillRowHtml(s){
+  function opts(arr, val){ return arr.map(function(v){ return '<option'+(v===val?" selected":"")+'>'+v+'</option>'; }).join(""); }
+  return '<tr data-id="'+s.id+'">'+
+    '<td><input type="text" data-f="name" value="'+escAttr(s.name)+'" placeholder="Skill name"></td>'+
+    '<td><select data-f="category">'+opts(CATEGORIES, s.category)+'</select></td>'+
+    '<td><select data-f="requiredLevel">'+opts(LEVELS, s.requiredLevel)+'</select></td>'+
+    '<td><select data-f="candidateLevel">'+opts(LEVELS, s.candidateLevel)+'</select></td>'+
+    '<td><input type="text" data-f="evidence" value="'+escAttr(s.evidence)+'"></td>'+
+    '<td><input type="text" data-f="years" value="'+escAttr(s.years)+'" style="width:60px"></td>'+
+    '<td><input type="text" data-f="recency" value="'+escAttr(s.recency)+'" placeholder="e.g. 2025" style="width:70px"></td>'+
+    '<td><select data-f="confidence">'+opts(CONF, s.confidence)+'</select></td>'+
+    '<td><select data-f="verification">'+opts(VERIF, s.verification)+'</select></td>'+
+    '<td><button class="btn ghost no-print" data-del="1" aria-label="Remove skill">✕</button></td>'+
+  '</tr>';
+}
+function renderSkillTable(filter){
+  var body = document.getElementById("skillBody");
+  var list = state.skills;
+  if(filter){ var f=filter.toLowerCase(); list = list.filter(function(s){ return (s.name||"").toLowerCase().indexOf(f)>-1 || (s.category||"").toLowerCase().indexOf(f)>-1; }); }
+  body.innerHTML = list.map(skillRowHtml).join("");
+}
+function wireSkillTable(){
+  var body = document.getElementById("skillBody");
+  body.addEventListener("input", function(e){
+    var tr = e.target.closest("tr"); if(!tr) return;
+    var id = tr.getAttribute("data-id"); var field = e.target.getAttribute("data-f"); if(!field) return;
+    var row = state.skills.filter(function(s){return s.id===id;})[0];
+    if(row){ row[field]=e.target.value; saveState(); if(field==="requiredLevel"||field==="candidateLevel") renderDashboard(); }
+  });
+  body.addEventListener("click", function(e){
+    if(e.target.getAttribute("data-del")){
+      var tr = e.target.closest("tr"); var id = tr.getAttribute("data-id");
+      state.skills = state.skills.filter(function(s){return s.id!==id;});
+      saveState(); renderSkillTable(document.getElementById("skillSearch").value);
+    }
+  });
+  document.getElementById("addSkill").addEventListener("click", function(){
+    state.skills.push({id:uid(), name:"", category:CATEGORIES[0], requiredLevel:LEVELS[2], candidateLevel:LEVELS[1], evidence:"", years:"", recency:"", confidence:"Medium", verification:"Pending"});
+    saveState(); renderSkillTable();
+  });
+  document.getElementById("skillSearch").addEventListener("input", function(e){ renderSkillTable(e.target.value); });
+}
+
+/* ============ EXPERIENCE & EDUCATION ============ */
+var RELEVANCE = ["Highly relevant","Relevant","Partially relevant","Transferable","Limited relevance"];
+function expRowHtml(x){
+  return '<tr data-id="'+x.id+'">'+
+    '<td><input type="text" data-f="employer" value="'+escAttr(x.employer)+'"></td>'+
+    '<td><input type="text" data-f="role" value="'+escAttr(x.role)+'"></td>'+
+    '<td><input type="text" data-f="dates" value="'+escAttr(x.dates)+'" placeholder="2021–2024"></td>'+
+    '<td><input type="text" data-f="industry" value="'+escAttr(x.industry)+'"></td>'+
+    '<td><textarea data-f="details">'+escHtml(x.details)+'</textarea></td>'+
+    '<td><select data-f="relevance">'+RELEVANCE.map(function(v){return '<option'+(v===x.relevance?" selected":"")+'>'+v+'</option>';}).join("")+'</select></td>'+
+    '<td><button class="btn ghost no-print" data-del="1" aria-label="Remove position">✕</button></td>'+
+  '</tr>';
+}
+function renderExpTable(){ document.getElementById("expBody").innerHTML = state.experience.map(expRowHtml).join(""); }
+function wireExpTable(){
+  var body = document.getElementById("expBody");
+  body.addEventListener("input", function(e){
+    var tr=e.target.closest("tr"); if(!tr) return;
+    var row = state.experience.filter(function(x){return x.id===tr.getAttribute("data-id");})[0];
+    var f = e.target.getAttribute("data-f"); if(row&&f){ row[f]=e.target.value; saveState(); }
+  });
+  body.addEventListener("click", function(e){
+    if(e.target.getAttribute("data-del")){
+      var tr=e.target.closest("tr");
+      state.experience = state.experience.filter(function(x){return x.id!==tr.getAttribute("data-id");});
+      saveState(); renderExpTable();
+    }
+  });
+  document.getElementById("addExp").addEventListener("click", function(){
+    state.experience.push({id:uid(), employer:"", role:"", dates:"", industry:"", details:"", relevance:"Relevant"});
+    saveState(); renderExpTable();
+  });
+}
+function eduRowHtml(x){
+  var reqOpts = ["Required","Preferred","Optional","Not required"].map(function(v){return '<option'+(v===x.required?" selected":"")+'>'+v+'</option>';}).join("");
+  var verOpts = ["Verified","Pending","Not applicable"].map(function(v){return '<option'+(v===x.verified?" selected":"")+'>'+v+'</option>';}).join("");
+  return '<tr data-id="'+x.id+'">'+
+    '<td><input type="text" data-f="name" value="'+escAttr(x.name)+'" placeholder="Degree / certification"></td>'+
+    '<td><input type="text" data-f="issuer" value="'+escAttr(x.issuer)+'"></td>'+
+    '<td><input type="text" data-f="year" value="'+escAttr(x.year)+'" style="width:90px"></td>'+
+    '<td><select data-f="required">'+reqOpts+'</select></td>'+
+    '<td><select data-f="verified">'+verOpts+'</select></td>'+
+    '<td><button class="btn ghost no-print" data-del="1" aria-label="Remove credential">✕</button></td>'+
+  '</tr>';
+}
+function renderEduTable(){ document.getElementById("eduBody").innerHTML = state.education.map(eduRowHtml).join(""); }
+function wireEduTable(){
+  var body = document.getElementById("eduBody");
+  body.addEventListener("input", function(e){
+    var tr=e.target.closest("tr"); if(!tr) return;
+    var row = state.education.filter(function(x){return x.id===tr.getAttribute("data-id");})[0];
+    var f = e.target.getAttribute("data-f"); if(row&&f){ row[f]=e.target.value; saveState(); }
+  });
+  body.addEventListener("click", function(e){
+    if(e.target.getAttribute("data-del")){
+      var tr=e.target.closest("tr");
+      state.education = state.education.filter(function(x){return x.id!==tr.getAttribute("data-id");});
+      saveState(); renderEduTable();
+    }
+  });
+  document.getElementById("addEdu").addEventListener("click", function(){
+    state.education.push({id:uid(), name:"", issuer:"", year:"", required:"Preferred", verified:"Pending"});
+    saveState(); renderEduTable();
+  });
+}
+
+/* ============ REFERENCE CHECKER ============ */
+var REF_CHECKS = ["Confirmed employment/relationship","Confirmed role","Confirmed dates","Confirmed responsibilities","Confirmed technical skills","Confirmed communication skills","Confirmed reliability","Confirmed teamwork","Confirmed leadership","Confirmed project performance","Confirmed relevant achievements","Additional comments documented","Reference identity verified"];
+var CONSISTENCY = ["Consistent with resume","Mostly consistent","Minor discrepancy","Significant discrepancy","Unable to verify"];
+function refCardHtml(r){
+  var checksHtml = REF_CHECKS.map(function(c,i){
+    var checked = r.checks && r.checks[i] ? "checked" : "";
+    return '<label class="checkrow"><input type="checkbox" data-check="'+i+'" '+checked+'> '+c+'</label>';
+  }).join("");
+  var consOpts = CONSISTENCY.map(function(c){return '<option'+(c===r.consistency?" selected":"")+'>'+c+'</option>';}).join("");
+  return '<div class="card" data-id="'+r.id+'" style="background:var(--paper)">'+
+    '<div class="rowhead"><h4 style="margin:0;font-family:var(--font-display)">Reference</h4><button class="btn ghost no-print" data-del="1">✕ Remove</button></div>'+
+    '<div class="grid cols-3">'+
+      '<div class="field"><label>Name</label><input type="text" data-f="name" value="'+escAttr(r.name)+'"></div>'+
+      '<div class="field"><label>Relationship</label><input type="text" data-f="relationship" value="'+escAttr(r.relationship)+'" placeholder="Former manager"></div>'+
+      '<div class="field"><label>Organization</label><input type="text" data-f="org" value="'+escAttr(r.org)+'"></div>'+
+      '<div class="field"><label>Position</label><input type="text" data-f="position" value="'+escAttr(r.position)+'"></div>'+
+      '<div class="field"><label>Response status</label><input type="text" data-f="responseStatus" value="'+escAttr(r.responseStatus)+'" placeholder="Contacted / responded"></div>'+
+      '<div class="field"><label>Consent status</label><input type="text" data-f="consent" value="'+escAttr(r.consent)+'"></div>'+
+    '</div>'+
+    '<div class="field"><label>What specifically did the reference confirm?</label><textarea data-f="evidenceText">'+escHtml(r.evidenceText)+'</textarea></div>'+
+    '<label>Reference questions</label><div class="checklist">'+checksHtml+'</div>'+
+    '<div class="field" style="margin-top:10px"><label>Reference consistency</label><select data-f="consistency">'+consOpts+'</select></div>'+
+    '<div class="field"><label>Follow-up notes</label><textarea data-f="notes" placeholder="Questions the reviewer should ask; do not treat discrepancies as proof of dishonesty">'+escHtml(r.notes)+'</textarea></div>'+
+  '</div>';
+}
+function renderRefList(){ document.getElementById("refList").innerHTML = state.references.map(refCardHtml).join("") || '<p class="hint">No references added yet.</p>'; }
+function wireRefList(){
+  var wrap = document.getElementById("refList");
+  wrap.addEventListener("input", function(e){
+    var card = e.target.closest("[data-id]"); if(!card) return;
+    var row = state.references.filter(function(r){return r.id===card.getAttribute("data-id");})[0]; if(!row) return;
+    if(e.target.hasAttribute("data-f")){ row[e.target.getAttribute("data-f")] = e.target.value; }
+    if(e.target.hasAttribute("data-check")){ row.checks = row.checks || {}; row.checks[e.target.getAttribute("data-check")] = e.target.checked; }
+    saveState(); renderDashboard();
+  });
+  wrap.addEventListener("click", function(e){
+    if(e.target.getAttribute("data-del")){
+      var card = e.target.closest("[data-id]");
+      state.references = state.references.filter(function(r){return r.id!==card.getAttribute("data-id");});
+      saveState(); renderRefList();
+    }
+  });
+  document.getElementById("addRef").addEventListener("click", function(){
+    state.references.push({id:uid(), name:"", relationship:"", org:"", position:"", responseStatus:"", consent:"", evidenceText:"", checks:{}, consistency:"Unable to verify", notes:""});
+    saveState(); renderRefList();
+  });
+}
+
+/* ============ GAP ANALYSIS ============ */
+var SEVERITY = ["Critical","High","Moderate","Low","Development opportunity"];
+function gapRowHtml(g){
+  var sevOpts = SEVERITY.map(function(s){return '<option'+(s===g.severity?" selected":"")+'>'+s+'</option>';}).join("");
+  return '<tr data-id="'+g.id+'">'+
+    '<td><input type="text" data-f="skill" value="'+escAttr(g.skill)+'"></td>'+
+    '<td><input type="text" data-f="requiredLevel" value="'+escAttr(g.requiredLevel)+'"></td>'+
+    '<td><input type="text" data-f="evidence" value="'+escAttr(g.evidence)+'"></td>'+
+    '<td><input type="text" data-f="gap" value="'+escAttr(g.gap)+'"></td>'+
+    '<td><select data-f="severity">'+sevOpts+'</select></td>'+
+    '<td><textarea data-f="recommendation">'+escHtml(g.recommendation)+'</textarea></td>'+
+    '<td><button class="btn ghost no-print" data-del="1" aria-label="Remove gap">✕</button></td>'+
+  '</tr>';
+}
+function renderGapTable(){ document.getElementById("gapBody").innerHTML = state.gaps.map(gapRowHtml).join(""); }
+function wireGapTable(){
+  var body = document.getElementById("gapBody");
+  body.addEventListener("input", function(e){
+    var tr=e.target.closest("tr"); if(!tr) return;
+    var row = state.gaps.filter(function(g){return g.id===tr.getAttribute("data-id");})[0];
+    var f=e.target.getAttribute("data-f"); if(row&&f){ row[f]=e.target.value; saveState(); }
+  });
+  body.addEventListener("click", function(e){
+    if(e.target.getAttribute("data-del")){
+      var tr=e.target.closest("tr");
+      state.gaps = state.gaps.filter(function(g){return g.id!==tr.getAttribute("data-id");});
+      saveState(); renderGapTable(); renderDashboard();
+    }
+  });
+  document.getElementById("addGap").addEventListener("click", function(){
+    state.gaps.push({id:uid(), skill:"", requiredLevel:"", evidence:"", gap:"", severity:"Moderate", recommendation:""});
+    saveState(); renderGapTable();
+  });
+  document.getElementById("autoGap").addEventListener("click", function(){
+    state.requirements.filter(function(r){ return r.status==="orange" || r.status==="red"; }).forEach(function(r){
+      state.gaps.push({id:uid(), skill:r.text, requiredLevel:r.priority, evidence:r.evidence||"(none stated)", gap:r.status==="red"?"Requirement not demonstrated":"Insufficient evidence/experience", severity: r.status==="red" ? "High":"Moderate", recommendation:"Targeted training / practical project addressing: "+r.text});
+    });
+    saveState(); renderGapTable(); renderDashboard();
+  });
+}
+
+/* ============ INTERVIEW BUILDER ============ */
+function qRowHtml(q){
+  var typeOpts = ["Technical","Behavioral","Situational","Evidence validation","Skills demonstration"].map(function(t){return '<option'+(t===q.type?" selected":"")+'>'+t+'</option>';}).join("");
+  var ratingOpts = [1,2,3,4,5].map(function(n){return '<option'+(String(n)===String(q.rating)?" selected":"")+'>'+n+'</option>';}).join("");
+  return '<tr data-id="'+q.id+'">'+
+    '<td><textarea data-f="question">'+escHtml(q.question)+'</textarea></td>'+
+    '<td><select data-f="type">'+typeOpts+'</select></td>'+
+    '<td><input type="text" data-f="competency" value="'+escAttr(q.competency)+'"></td>'+
+    '<td><select data-f="rating"><option value="">—</option>'+ratingOpts+'</select></td>'+
+    '<td><textarea data-f="evidence" placeholder="Interviewer notes / reasoning">'+escHtml(q.evidence)+'</textarea></td>'+
+    '<td><button class="btn ghost no-print" data-del="1" aria-label="Remove question">✕</button></td>'+
+  '</tr>';
+}
+function renderQTable(){ document.getElementById("qBody").innerHTML = state.questions.map(qRowHtml).join(""); document.getElementById("statQuestions").textContent = state.questions.length; }
+function wireQTable(){
+  var body = document.getElementById("qBody");
+  body.addEventListener("input", function(e){
+    var tr=e.target.closest("tr"); if(!tr) return;
+    var row = state.questions.filter(function(q){return q.id===tr.getAttribute("data-id");})[0];
+    var f=e.target.getAttribute("data-f"); if(row&&f){ row[f]=e.target.value; saveState(); }
+  });
+  body.addEventListener("click", function(e){
+    if(e.target.getAttribute("data-del")){
+      var tr=e.target.closest("tr");
+      state.questions = state.questions.filter(function(q){return q.id!==tr.getAttribute("data-id");});
+      saveState(); renderQTable();
+    }
+  });
+  document.getElementById("addQ").addEventListener("click", function(){
+    state.questions.push({id:uid(), question:"", type:"Technical", competency:"", rating:"", evidence:""});
+    saveState(); renderQTable();
+  });
+  document.getElementById("genQuestions").addEventListener("click", function(){
+    var templates = {
+      yellow:function(t){ return 'Describe how you used "'+t+'" on a recent project. What was your specific contribution and the measurable outcome?'; },
+      orange:function(t){ return 'Walk through how you would approach "'+t+'" today — what training or experience would you bring to close the gap?'; },
+      red:function(t){ return 'This role requires "'+t+'". Tell me about any experience, even informal, that relates to this.'; },
+      purple:function(t){ return 'Your resume/reference material touches on "'+t+'" — can you confirm the scope and your specific role in it?'; }
+    };
+    state.requirements.filter(function(r){ return ["yellow","orange","red","purple"].indexOf(r.status)>-1 && r.text; }).forEach(function(r){
+      var fn = templates[r.status];
+      state.questions.push({id:uid(), question: fn(r.text), type: r.status==="red"?"Evidence validation":(r.status==="orange"?"Situational":"Technical"), competency:r.text, rating:"", evidence:""});
+    });
+    saveState(); renderQTable();
+  });
+}
+
+/* ============ REASONING SUMMARIZER ============ */
+function bucketFor(status){
+  return {green:"strong", blue:"transfer", yellow:"partial", orange:"dev", red:"missing", purple:"verify", grey:"missing"}[status];
+}
+function renderReasoning(){
+  var buckets = {strong:[], partial:[], missing:[], transfer:[], dev:[], verify:[]};
+  state.requirements.forEach(function(r){
+    if(!r.text) return;
+    var b = bucketFor(r.status);
+    buckets[b].push(r.text);
+    if(r.grade==="U") buckets.verify.push(r.text + " (unverified evidence)");
+  });
+  function fill(id, arr){
+    var el = document.getElementById(id);
+    el.innerHTML = arr.length ? arr.map(function(t){return "<li>"+escHtml(t)+"</li>";}).join("") : "<li>None identified.</li>";
+  }
+  fill("rStrong", buckets.strong); fill("rPartial", buckets.partial); fill("rMissing", buckets.missing);
+  fill("rTransfer", buckets.transfer); fill("rDev", buckets.dev); fill("rVerify", buckets.verify);
+
+  var name = state.candidate.name || "The candidate";
+  var parts = [];
+  if(buckets.strong.length) parts.push(name + " demonstrates strong, verified evidence for " + joinList(buckets.strong) + ".");
+  if(buckets.transfer.length) parts.push("Relevant, transferable evidence is present for " + joinList(buckets.transfer) + ", though it is not an exact match to the stated requirement.");
+  if(buckets.partial.length) parts.push("Evidence is partial for " + joinList(buckets.partial) + " — exposure is indicated but proficiency level, scale, or outcomes are not fully established.");
+  if(buckets.dev.length) parts.push(joinList(buckets.dev) + " appear to be development opportunities rather than currently demonstrated qualifications.");
+  if(buckets.missing.length) parts.push("No adequate evidence was found for " + joinList(buckets.missing) + "; this does not necessarily mean the candidate lacks the qualification, only that it was not established in the material reviewed.");
+  if(buckets.verify.length) parts.push(joinList(buckets.verify) + " require independent verification (reference, documentation, or interview) before being relied upon.");
+  if(!parts.length) parts.push("Add requirements to the requirement matrix to generate a reasoning summary.");
+  document.getElementById("rNarrative").innerHTML = parts.map(function(p){return "<p>"+p+"</p>";}).join("");
+}
+function joinList(arr){
+  var u = arr.filter(function(v,i,a){return a.indexOf(v)===i;});
+  if(u.length<=1) return u.join("");
+  if(u.length===2) return u[0]+" and "+u[1];
+  return u.slice(0,-1).join(", ")+", and "+u[u.length-1];
+}
+function renderThreePane(){
+  var paneReqs = document.getElementById("paneReqs");
+  paneReqs.innerHTML = "";
+  state.requirements.filter(function(r){return r.text;}).forEach(function(r){
+    var btn = document.createElement("button");
+    btn.className = "reqlink"; btn.type="button";
+    btn.innerHTML = '<span class="pill '+r.status+'" style="margin-right:6px">'+STATUS_META[r.status].icon+'</span>'+escHtml(r.text);
+    btn.addEventListener("click", function(){
+      document.querySelectorAll(".reqlink").forEach(function(b){b.setAttribute("aria-pressed","false");});
+      btn.setAttribute("aria-pressed","true");
+      document.getElementById("paneEvidence").innerHTML = "<strong>Requirement:</strong> "+escHtml(r.text)+"<hr>"+ (escHtml(r.evidence) || "<em>No evidence recorded.</em>");
+      document.getElementById("paneReasoning").innerHTML = "<strong>Status:</strong> "+STATUS_META[r.status].label+"<hr>"+(escHtml(r.reasoning) || "<em>No reviewer reasoning recorded yet.</em>") + (r.verification? "<hr><strong>Verification:</strong> "+escHtml(r.verification):"");
+    });
+    paneReqs.appendChild(btn);
+  });
+  if(!state.requirements.length) paneReqs.innerHTML = "<p class='hint'>No requirements added yet.</p>";
+}
+
+/* ============ REVIEW STATUS ============ */
+var REVIEW_STATUSES = ["Strong evidence for progression","Progress with verification","Interview recommended","Additional assessment recommended","Development candidate","Insufficient evidence","Requirements not demonstrated","Human review required"];
+function renderReviewChecklist(){
+  var el = document.getElementById("reviewChecklist");
+  el.innerHTML = REVIEW_STATUSES.map(function(s,i){
+    var checked = state.review.checklist[i] ? "checked" : "";
+    return '<label class="checkrow"><input type="checkbox" data-idx="'+i+'" '+checked+'> '+s+'</label>';
+  }).join("");
+  el.addEventListener("change", function(e){
+    if(e.target.hasAttribute("data-idx")){
+      state.review.checklist[e.target.getAttribute("data-idx")] = e.target.checked;
+      saveState();
+    }
+  });
+}
+
+/* ============ DASHBOARD ============ */
+function renderDashboard(){
+  document.getElementById("dashCandidateName").textContent = state.candidate.name || "No candidate name entered";
+  document.getElementById("dashCandidateRole").textContent = state.candidate.targetRole ? ("Target role: " + state.candidate.targetRole) : "No candidate loaded";
+  document.getElementById("dashJobTitle").textContent = state.job.title || "No job title entered";
+  document.getElementById("dashJobMeta").textContent = [state.job.department, state.job.seniority].filter(Boolean).join(" · ") || "No job description loaded";
+
+  var reqs = state.requirements.filter(function(r){return r.text;});
+  var num=0, den=0;
+  reqs.forEach(function(r){
+    var w = PRIORITY_WEIGHT[r.priority] != null ? PRIORITY_WEIGHT[r.priority] : 1;
+    num += STATUS_SCORE[r.status]*w; den += 100*w;
+  });
+  var match = den ? Math.round(num/den*100) : 0;
+  document.getElementById("statMatch").textContent = match + "%";
+  document.getElementById("statMatchBar").style.width = match + "%";
+
+  var must = reqs.filter(function(r){return r.priority==="Must have";});
+  var mustMet = must.filter(function(r){return r.status==="green"||r.status==="blue";});
+  document.getElementById("statReqSkills").textContent = mustMet.length + " / " + must.length;
+  var should = reqs.filter(function(r){return r.priority==="Should have"||r.priority==="Nice to have";});
+  var shouldMet = should.filter(function(r){return r.status==="green"||r.status==="blue";});
+  document.getElementById("statPrefSkills").textContent = shouldMet.length + " / " + should.length;
+
+  var grades = reqs.map(function(r){return r.grade;}).filter(Boolean);
+  var strength = "—";
+  if(grades.length){
+    var order = {A:4,B:3,C:2,D:1,U:0};
+    var avg = grades.reduce(function(s,g){return s+(order[g]||0);},0)/grades.length;
+    strength = avg>=3?"Strong": avg>=2?"Moderate":"Weak";
+  }
+  document.getElementById("statEvidence").textContent = strength;
+
+  if(state.references.length){
+    var allConsistent = state.references.every(function(r){return r.consistency==="Consistent with resume"||r.consistency==="Mostly consistent";});
+    var anyChecked = state.references.some(function(r){return r.checks && Object.keys(r.checks).some(function(k){return r.checks[k];});});
+    document.getElementById("statRef").textContent = allConsistent ? "Verified" : (anyChecked ? "Partial" : "Pending");
+  } else { document.getElementById("statRef").textContent = "Pending"; }
+
+  document.getElementById("statGaps").textContent = state.gaps.length + reqs.filter(function(r){return r.status==="orange";}).length;
+  document.getElementById("statVerify").textContent = reqs.filter(function(r){return r.status==="purple"||r.grade==="U";}).length;
+  document.getElementById("statQuestions").textContent = state.questions.length;
+}
+
+/* ============ WEIGHTS PANEL ============ */
+function renderWeights(){
+  var grid = document.getElementById("weightGrid");
+  grid.innerHTML = Object.keys(state.weights).map(function(k){
+    return '<div class="field"><label>'+k+' <span style="font-family:var(--font-mono)">('+state.weights[k]+'%)</span></label><input type="number" min="0" max="100" data-w="'+k+'" value="'+state.weights[k]+'"></div>';
+  }).join("");
+  grid.addEventListener("input", function(e){
+    var w = e.target.getAttribute("data-w"); if(!w) return;
+    state.weights[w] = Number(e.target.value)||0; saveState();
+  });
+}
+
+/* ============ REVIEW FIELD BINDINGS (checklist handled separately) ============ */
+
+/* ============ EXPORT ============ */
+function download(filename, content, mime){
+  var blob = new Blob([content], {type:mime});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement("a"); a.href=url; a.download=filename; document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+function escHtml(s){ return (s||"").replace(/[&<>]/g, function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c];}); }
+function escAttr(s){ return escHtml(s).replace(/"/g,"&quot;"); }
+
+function wireExport(){
+  document.getElementById("printBtn").addEventListener("click", function(){ window.print(); });
+  document.getElementById("exportJson").addEventListener("click", function(){
+    download("skilltestreview_"+(state.candidate.name||"candidate").replace(/\s+/g,"_")+".json", JSON.stringify(state,null,2), "application/json");
+  });
+  document.getElementById("exportCsv").addEventListener("click", function(){
+    var rows = [["Requirement","Priority","Evidence","Grade","Status","Verification","Reasoning"]];
+    state.requirements.forEach(function(r){ rows.push([r.text,r.priority,r.evidence,r.grade,STATUS_META[r.status].label,r.verification,r.reasoning]); });
+    var csv = rows.map(function(row){ return row.map(function(c){ return '"'+String(c||"").replace(/"/g,'""')+'"'; }).join(","); }).join("\n");
+    download("requirement_matrix.csv", csv, "text/csv");
+  });
+  document.getElementById("exportMd").addEventListener("click", function(){
+    var md = "# Candidate Review Report\n\n";
+    md += "## 1. Job Overview\n" + (state.job.title||"—") + " · " + (state.job.department||"") + "\n\n";
+    md += "## 2. Candidate Summary\n" + (state.candidate.name||"—") + " — " + (state.candidate.targetRole||"") + "\n\n" + (state.candidate.summary||"") + "\n\n";
+    md += "## 3. Requirement Matrix\n";
+    state.requirements.forEach(function(r){ md += "- **"+r.text+"** ("+r.priority+") — "+STATUS_META[r.status].label+" — "+r.reasoning+"\n"; });
+    md += "\n## 4. Skill Matrix\n";
+    state.skills.forEach(function(s){ md += "- "+s.name+": required "+s.requiredLevel+", candidate "+s.candidateLevel+"\n"; });
+    md += "\n## 7. Reference Review\n";
+    state.references.forEach(function(r){ md += "- "+r.name+" ("+r.relationship+") — "+r.consistency+"\n"; });
+    md += "\n## 8. Gap Analysis\n";
+    state.gaps.forEach(function(g){ md += "- "+g.skill+": "+g.gap+" — Severity: "+g.severity+"\n"; });
+    md += "\n## 9. Interview Questions\n";
+    state.questions.forEach(function(q){ md += "- ("+q.type+") "+q.question+"\n"; });
+    md += "\n## 12. Final Human Review\nDecision: "+ (state.review.decision||"—") +"\nReason: "+(state.review.reason||"—")+"\nEvidence: "+(state.review.evidenceSupporting||"—")+"\n";
+    md += "\n---\n*SkillTestReview is a decision-support and documentation tool. It does not replace qualified HR professionals, hiring managers, legal counsel, or applicable law. Human review required.*\n";
+    download("candidate_review_report.md", md, "text/markdown");
+  });
+  document.getElementById("clearCandidate").addEventListener("click", function(){
+    if(!confirm("Clear candidate profile and resume text? Requirements, job description and other review data will be kept.")) return;
+    state.candidate = DEFAULT_STATE().candidate; saveState(); bindFields(); renderDashboard();
+  });
+  document.getElementById("resetAll").addEventListener("click", function(){
+    if(!confirm("Reset the entire project? This clears all data in this browser.")) return;
+    state = DEFAULT_STATE(); saveState(); location.reload();
+  });
+  document.getElementById("localOnly").addEventListener("click", function(){
+    var pressed = this.getAttribute("aria-pressed")==="true";
+    this.setAttribute("aria-pressed", pressed?"false":"true");
+    document.getElementById("dataStatus").textContent = pressed ?
+      "Local-only mode disabled (note: this demo application never transmits data regardless of this setting)." :
+      "All data is stored only in this browser's local storage. Nothing is transmitted anywhere by this page.";
+  });
+}
+
+/* ============ SAMPLE DATA (section 35 example) ============ */
+function loadSampleData(){
+  state.candidate = {name:"Jordan A. Reyes", targetRole:"BIM Coordinator", summary:"Architectural professional with experience supporting multidisciplinary design documentation.", location:"Denver, CO", yearsExp:"4", industry:"Architecture / AEC", currentRole:"Design Technologist, Meridian Architecture", resumeText:"Used Revit for architectural documentation. Worked on BIM projects. Coordinated with engineering consultants on select projects. Assisted with construction documentation sets."};
+  state.job = {title:"BIM Coordinator", department:"Design Technology", seniority:"Mid-level", employmentType:"Full-time", requiredSkills:"Advanced Revit, BIM coordination, construction documentation", preferredSkills:"Navisworks, MEP coordination", requiredExperience:"3+ years AEC BIM experience", preferredExperience:"Multidisciplinary coordination on projects >50,000 sq ft", requiredCerts:"", education:"Bachelor's in Architecture or related field, or equivalent experience", software:"Revit, AutoCAD, Navisworks", responsibilities:"Coordinate multidisciplinary BIM models; manage clash detection; support documentation quality."};
+  state.requirements = [
+    {id:uid(), text:"Advanced Revit", priority:"Must have", evidence:"\"Used Revit for architectural documentation.\"", grade:"C", status:"yellow", verification:"Ask about modeling complexity in interview", reasoning:"Resume establishes Revit exposure but does not demonstrate advanced proficiency (families, coordination workflow, project scale, responsibility level)."},
+    {id:uid(), text:"BIM coordination", priority:"Must have", evidence:"\"Worked on BIM projects.\"", grade:"D", status:"orange", verification:"Confirm coordination responsibility with references", reasoning:"BIM exposure indicated but no evidence of coordination responsibility, model conflict resolution, or discipline interfacing."},
+    {id:uid(), text:"Construction documentation", priority:"Must have", evidence:"\"Assisted with construction documentation sets.\"", grade:"B", status:"blue", verification:"", reasoning:"Relevant, hands-on documentation experience; assisting role suggests supporting rather than leading responsibility."},
+    {id:uid(), text:"Navisworks", priority:"Nice to have", evidence:"", grade:"U", status:"red", verification:"", reasoning:"No resume evidence of Navisworks use."},
+    {id:uid(), text:"MEP coordination", priority:"Should have", evidence:"\"Coordinated with engineering consultants on select projects.\"", grade:"C", status:"blue", verification:"Confirm scope of consultant coordination", reasoning:"Transferable coordination experience; MEP-specific scope not confirmed."},
+    {id:uid(), text:"Client communication", priority:"Nice to have", evidence:"", grade:"U", status:"grey", verification:"", reasoning:"Not addressed in resume; not disqualifying on its own."}
+  ];
+  state.skills = [
+    {id:uid(), name:"Revit", category:"Technical – BIM/CAD", requiredLevel:"Advanced", candidateLevel:"Intermediate", evidence:"Architectural documentation", years:"4", recency:"2026", confidence:"Medium", verification:"Pending"},
+    {id:uid(), name:"BIM coordination workflow", category:"Technical – BIM/CAD", requiredLevel:"Advanced", candidateLevel:"Beginner", evidence:"General BIM project involvement", years:"2", recency:"2026", confidence:"Low", verification:"Pending"},
+    {id:uid(), name:"Navisworks", category:"Technical – BIM/CAD", requiredLevel:"Intermediate", candidateLevel:"Awareness", evidence:"Not evidenced", years:"", recency:"", confidence:"Low", verification:"Not required"}
+  ];
+  state.experience = [{id:uid(), employer:"Meridian Architecture", role:"Design Technologist", dates:"2022–present", industry:"Architecture", details:"Revit documentation support; consultant coordination on select projects.", relevance:"Relevant"}];
+  state.education = [{id:uid(), name:"B.Arch, Architecture", issuer:"State University", year:"2021", required:"Preferred", verified:"Pending"}];
+  state.references = [{id:uid(), name:"Pat Nguyen", relationship:"Direct manager", org:"Meridian Architecture", position:"Design Director", responseStatus:"Responded", consent:"Confirmed", evidenceText:"Confirmed role and general responsibilities; leadership scope on BIM coordination not independently confirmed.", checks:{0:true,1:true,2:true,4:true}, consistency:"Mostly consistent", notes:"Ask reference for specifics on project/team scope for BIM coordination claims."}];
+  state.gaps = [{id:uid(), skill:"BIM coordination", requiredLevel:"Advanced", evidence:"General project involvement, intermediate", gap:"Advanced modeling / multidisciplinary coordination", severity:"High", recommendation:"Advanced Revit/BIM coordination training; shadow a coordination lead on next project."}];
+  state.questions = [{id:uid(), question:"Describe the most complex Revit model you have personally developed or coordinated. What was your specific responsibility?", type:"Evidence validation", competency:"Advanced Revit", rating:"", evidence:""}];
+  saveState();
+  bindFields(); renderReqTable(); renderSkillTable(); renderExpTable(); renderEduTable(); renderRefList(); renderGapTable(); renderQTable(); renderDashboard();
+}
+
+/* ============ THEME / MODE TOGGLES ============ */
+function wireToggles(){
+  document.getElementById("themeToggle").addEventListener("click", function(){
+    document.body.classList.toggle("dark");
+    state.meta.theme = document.body.classList.contains("dark") ? "dark":"light";
+    this.textContent = state.meta.theme==="dark" ? "☀️ Light mode" : "🌙 Dark mode";
+    saveState();
+  });
+  document.getElementById("modeToggle").addEventListener("click", function(){
+    document.body.classList.toggle("edu");
+    state.meta.mode = document.body.classList.contains("edu") ? "educational":"professional";
+    this.textContent = state.meta.mode==="educational" ? "🏢 Professional mode" : "🎓 Educational mode";
+    saveState();
+  });
+  document.getElementById("loadSample").addEventListener("click", loadSampleData);
+  document.getElementById("navToggle").addEventListener("click", function(){
+    var nav = document.getElementById("railnav");
+    var open = nav.classList.toggle("open");
+    this.setAttribute("aria-expanded", open?"true":"false");
+  });
+  document.getElementById("regenReasoning").addEventListener("click", function(){ renderReasoning(); renderThreePane(); });
+}
+
+/* ============ RESUME FILE UPLOAD (txt) ============ */
+function wireResumeUpload(){
+  document.getElementById("resumeFile").addEventListener("change", function(e){
+    var file = e.target.files[0]; if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(ev){
+      document.getElementById("resumeText").value = ev.target.result;
+      state.candidate.resumeText = ev.target.result; saveState();
+    };
+    reader.readAsText(file);
+  });
+}
+
+/* ============ INIT ============ */
+function init(){
+  loadState();
+  renderNav();
+  setActiveTab("dashboard");
+  bindFields();
+  renderReqTable(); wireReqTable();
+  renderSkillTable(); wireSkillTable();
+  renderExpTable(); wireExpTable();
+  renderEduTable(); wireEduTable();
+  renderRefList(); wireRefList();
+  renderGapTable(); wireGapTable();
+  renderQTable(); wireQTable();
+  renderReviewChecklist();
+  renderWeights();
+  wireExport();
+  wireToggles();
+  wireResumeUpload();
+  renderDashboard();
+  if(state.meta.theme==="dark"){ document.body.classList.add("dark"); document.getElementById("themeToggle").textContent="☀️ Light mode"; }
+  if(state.meta.mode==="educational"){ document.body.classList.add("edu"); document.getElementById("modeToggle").textContent="🏢 Professional mode"; }
+  if(!state.requirements.length && !localStorage.getItem("skilltestreview_state")){
+    // first run: seed a couple of blank rows so the table isn't empty
+    state.requirements.push({id:uid(), text:"", priority:"Must have", evidence:"", grade:"C", status:"grey", verification:"", reasoning:""});
+    renderReqTable();
+  }
+}
+document.addEventListener("DOMContentLoaded", init);
+})();
+</script>
+</body>
+</html>
